@@ -2,35 +2,36 @@ import {
 	GraphQLSchema,
 	GraphQLObjectType,
 	GraphQLInt,
-	GraphQLString
+	GraphQLString,
+	GraphQLList,
+	GraphQLFloat
 } from "graphql";
 
-let counter = 42;
+let Schema = (db) => {
 
-let schema = new GraphQLSchema({
-	query: new GraphQLObjectType({
-		name: "Query",
+	let productType = new GraphQLObjectType({
+		name: "Product",
 		fields: () => ({
-			counter: {
-				type: GraphQLInt,
-				resolve: () => counter
-			},
-			message: {
-				type: GraphQLString,
-				resolve: () => "Hello GraphQL!"
-			}
+			_id: { type: GraphQLString },
+			ProductId: { type: GraphQLString },
+			ProductName: { type: GraphQLString },
+			Price: { type: GraphQLFloat }
 		})
+	});
 
-	}),
-	mutation: new GraphQLObjectType({
-		name: "Mutation",
-		fields: () => ({
-			incrementCounter: {
-				type: GraphQLInt,
-				resolve: () => ++counter
-			}
+	let schema = new GraphQLSchema({
+		query: new GraphQLObjectType({
+			name: "Query",
+			fields: () => ({
+				products: {
+					type: new GraphQLList(productType),
+					resolve: () => db.collection("products").find({}).toArray()
+				}
+			})
 		})
-	})
-});
+	});
 
-export default schema;
+	return schema;
+};
+
+export default Schema;

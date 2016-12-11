@@ -1,12 +1,21 @@
-import { get } from "jquery";
+import { post } from "jquery";
 import ServerActions from "./actions/ServerActions";
 
 let API = {
 	getProducts() {
 		console.log("1. In API.");
 
-		get("/data/products").done(res => {
-			ServerActions.receiveProducts(res);
+		post("/graphql", {
+			query: `{
+  products {
+    _id
+    ProductId
+    ProductName
+    Price
+  }
+}`
+		}).done(res => {
+			ServerActions.receiveProducts(res.data.products);
 		});
 	}
 };

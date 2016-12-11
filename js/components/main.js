@@ -27,7 +27,7 @@ export default class Main extends React.Component {
 	render() {
 		let content = this.state.products.map(product => {
 			return <li key={product.ProductId}>
-				<span>{product.ProductName}</span>
+				<p>{product.ProductName}</p>
 			</li>;
 		});
 		return (

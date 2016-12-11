@@ -20,7 +20,7 @@ class ProductStore extends EventEmitter {
 		});
 	}
 
-	getAll(){
+	getAll() {
 		return _products;
 	}
 }

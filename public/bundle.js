@@ -22080,7 +22080,7 @@
 						"li",
 						{ key: product.ProductId },
 						_react2.default.createElement(
-							"span",
+							"p",
 							null,
 							product.ProductName
 						)
@@ -22133,8 +22133,10 @@
 		getProducts: function getProducts() {
 			console.log("1. In API.");
 	
-			(0, _jquery.get)("/data/products").done(function (res) {
-				_ServerActions2.default.receiveProducts(res);
+			(0, _jquery.post)("/graphql", {
+				query: "{\n  products {\n    _id\n    ProductId\n    ProductName\n    Price\n  }\n}"
+			}).done(function (res) {
+				_ServerActions2.default.receiveProducts(res.data.products);
 			});
 		}
 	};
